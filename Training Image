@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astra's Wire Standards v9.2 - Aligned Gold Master</title>
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --panel-color: #16213e;
+            --text-color: #e94560;
+            --accent-color: #0f3460;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-color);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            transition: filter 0.5s ease;
+        }
+
+        /* SIMULATION CLASS for Color Blindness */
+        body.grayscale-mode {
+            filter: grayscale(100%) contrast(120%);
+        }
+
+        .safety-manual {
+            background-color: var(--panel-color);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--text-color);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: var(--text-color);
+            text-transform: uppercase;
+            text-align: center;
+            border-bottom: 2px dashed var(--text-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px var(--text-color);
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+
+        button {
+            background-color: var(--text-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .wire-container {
+            margin-bottom: 30px;
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .wire-label {
+            font-size: 0.9em;
+            color: #a0a0a0;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: bold;
+        }
+
+        .wire-demo {
+            height: 50px; /* Thicker to show texture */
+            width: 100%;
+            border-radius: 25px;
+            /* The 'Reflective' layer - simulated lighting */
+            box-shadow: 
+                inset 0 10px 15px rgba(255,255,255,0.1), 
+                inset 0 -10px 15px rgba(0,0,0,0.6), 
+                0 0 5px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* --- ASTRA'S UNIVERSAL DESIGN PATTERNS --- */
+
+        /* 1. SIGNAL S-1: USER TUNED (The Lazy River) */
+        .wire-signal-s1 {
+            background-color: #ff4d4d;
+            background-image: 
+                radial-gradient(ellipse 50% 63% at 50% 100%, transparent 21px, rgba(255,255,255,0.9) 22px, rgba(255,255,255,0.9) 24px, transparent 25px),
+                radial-gradient(ellipse 50% 63% at 50% 0%, transparent 21px, rgba(255,255,255,0.9) 22px, rgba(255,255,255,0.9) 24px, transparent 25px);
+            background-size: 92px 42px;
+            background-position: 0px -11px, 46px 31px;
+            background-repeat: repeat-x;
+        }
+
+        /* 2. SIGNAL S-2: USER TUNED (High Data) */
+        .wire-signal-s2 {
+            background-color: #d93030; 
+            background-image: 
+                radial-gradient(ellipse 50% 200% at 50% 100%, transparent 10px, rgba(255,255,255,0.9) 11px, rgba(255,255,255,0.9) 12px, transparent 13px),
+                radial-gradient(ellipse 50% 200% at 50% 0%, transparent 10px, rgba(255,255,255,0.9) 11px, rgba(255,255,255,0.9) 12px, transparent 13px);
+            background-size: 47px 20px;
+            background-position: 0px 0px, 23.5px 20px;
+            background-repeat: repeat-x;
+        }
+
+        /* 3. SIGNAL S-3: TIMED DATA (The Dashed Sync) */
+        .wire-signal-s3 {
+            background-color: #b30000;
+            background-image: 
+                linear-gradient(90deg, #ffcc00 15px, transparent 15px),
+                radial-gradient(ellipse 50% 200% at 50% 100%, transparent 10px, #ffffff 11px, #ffffff 12px, transparent 13px),
+                radial-gradient(ellipse 50% 200% at 50% 0%, transparent 10px, #ffffff 11px, #ffffff 12px, transparent 13px);
+            background-size: 47px 2px, 47px 20px, 47px 20px;
+            background-position: 5px 24px, 0px 5px, 23.5px 25px;
+            background-repeat: repeat-x;
+        }
+
+        /* 4. POWER L2: CLASS B (110-240V) */
+        .wire-power-l2 {
+            background-color: #5c4033; /* Industrial Brown */
+            background-image: 
+                repeating-linear-gradient(56deg,
+                transparent,
+                transparent 50px,
+                #ffffff 50px,
+                #ffffff 52px);
+            background-size: 100% 100%;
+            background-position: 0 0;
+            background-repeat: no-repeat;
+        }
+
+        /* 5. POWER L3: CLASS C (480V+ High Hazard) */
+        .wire-danger-l3 {
+            background-color: #5c4033; 
+            background-image: 
+                url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'72'%20height%3D'20'%3E%3Cpath%20d%3D'M26%200%20L46%2020%20M46%200%20L26%2020'%20stroke%3D'%23ffcc00'%20stroke-width%3D'2'%20fill%3D'none'%2F%3E%3C%2Fsvg%3E"),
+                repeating-linear-gradient(45deg,
+                transparent,
+                transparent 49px,
+                #ffffff 49px,
+                #ffffff 51px);
+            background-size: auto, 100% 100%;
+            /* Astra's Shift: Moved from 6px to 14px */
+            background-position: 14px 20px, 0 0;
+            background-repeat: repeat-x, no-repeat;
+        }
+
+        /* 6. NEUTRAL: CLASS D (Return Path) */
+        .wire-neutral {
+            background-color: #f5f5f5; /* Bright White */
+            /* No texture - Smooth 'Null' surface */
+            box-shadow: 
+                inset 0 10px 15px rgba(255,255,255,0.8), /* Enhanced shine for white */
+                inset 0 -10px 15px rgba(0,0,0,0.3), 
+                0 0 5px rgba(0,0,0,0.5);
+        }
+
+        /* 7. GROUND: CLASS E (Protective Earth) */
+        .wire-ground {
+            background-color: #008000; /* Green */
+            background-image: 
+                repeating-linear-gradient(90deg,
+                #fdc901 0,   /* Yellow */
+                #fdc901 5px,
+                transparent 5px,
+                transparent 35px);
+            background-size: 100% 100%;
+            background-position: 0 0;
+            background-repeat: no-repeat;
+        }
+
+        .desc {
+            font-size: 0.8em;
+            color: #ccc;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .haptic-note {
+            color: #4da6ff;
+            font-weight: bold;
+            font-size: 0.75em;
+            display: block;
+            margin-top: 2px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="safety-manual">
+        <h1>Universal Wire Standard</h1>
+        
+        <div class="controls">
+            <p style="font-size: 0.8em; margin-bottom: 10px;">TEST PROTOCOL:</p>
+            <button onclick="toggleGrayscale()">Toggle Color Blindness Sim</button>
+        </div>
+
+        <h3>CLASS A: DATA / SIGNAL</h3>
+
+        <!-- Signal Wire S-1 -->
+        <div class="wire-container">
+            <span class="wire-label">CLASS A: S-1 (LOW DATA)</span>
+            <div class="wire-demo wire-signal-s1"></div>
+            <span class="haptic-note">HAPTIC: Smooth, Long-Wavelength Ridge</span>
+            <div class="desc">Gentle sine wave (92px). Relaxed data flow.</div>
+        </div>
+
+        <!-- Signal Wire S-2 -->
+        <div class="wire-container">
+            <span class="wire-label">CLASS A: S-2 (HIGH DATA)</span>
+            <div class="wire-demo wire-signal-s2"></div>
+            <span class="haptic-note">HAPTIC: Rapid, Steep Pulse</span>
+            <div class="desc">High-frequency sine wave (47px). Aggressive verticality.</div>
+        </div>
+
+        <!-- Signal Wire S-3 -->
+        <div class="wire-container">
+            <span class="wire-label">CLASS A: S-3 (TIMED / SYNC DATA)</span>
+            <div class="wire-demo wire-signal-s3"></div>
+            <span class="haptic-note">HAPTIC: Rapid Pulse + Horizontal Dash</span>
+            <div class="desc">S-2 geometry with yellow dashes indicating timing/sync points.</div>
+        </div>
+
+        <h3>CLASS B & C: POWER</h3>
+
+        <!-- Power L2 Wire -->
+        <div class="wire-container">
+            <span class="wire-label">CLASS B: POWER (L2) 110V-240V</span>
+            <div class="wire-demo wire-power-l2"></div>
+            <span class="haptic-note">HAPTIC: Wide Spiral Ridge (50px spacing)</span>
+            <div class="desc">Medium Hazard. Brown casing with 56deg silver spiral.</div>
+        </div>
+
+        <!-- Danger L3 Wire -->
+        <div class="wire-container">
+            <span class="wire-label">CLASS C: DANGER (L3) 480V+</span>
+            <div class="wire-demo wire-danger-l3"></div>
+            <span class="haptic-note">HAPTIC: Spiral Ridge + Raised 'X'</span>
+            <div class="desc">High Hazard. Brown casing, 45deg spiral, Yellow X warning markers.</div>
+        </div>
+
+        <h3>CLASS D & E: SAFETY RETURN</h3>
+
+        <!-- Neutral Wire -->
+        <div class="wire-container">
+            <span class="wire-label">CLASS D: NEUTRAL (RETURN)</span>
+            <div class="wire-demo wire-neutral"></div>
+            <span class="haptic-note">HAPTIC: Smooth, Solid Surface</span>
+            <div class="desc">Solid White. No texture pattern. The "Blank Canvas" return path.</div>
+        </div>
+
+        <!-- Ground Wire -->
+        <div class="wire-container">
+            <span class="wire-label">CLASS E: GROUND (PROTECTIVE EARTH)</span>
+            <div class="wire-demo wire-ground"></div>
+            <span class="haptic-note">HAPTIC: Smooth Repeating Rings</span>
+            <div class="desc">Green casing with vertical Yellow bands. Safety grounding.</div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleGrayscale() {
+            document.body.classList.toggle('grayscale-mode');
+        }
+    </script>
+
+</body>
+</html>
